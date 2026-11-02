@@ -1,0 +1,577 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><title>블루타이거 300 번호 뽑기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Black+Han+Sans&family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap">
+</head><body>
+
+<style>
+/* Layout: a party stage for screen-sharing — bunting across the top, sticker-style headline, a confetti-coloured board of 300 tickets, host controls below. One deliberate festive look (single theme). */
+:root{
+  --bg:#2a5cf0;          /* BlueTiger party blue */
+  --bg-deep:#1a3cc0;
+  --paper:#fffaf0;       /* ticket paper */
+  --ink:#151a3d;         /* text on paper */
+  --ink-soft:#4b5480;
+  --on-bg:#ffffff;
+  --on-bg-soft:#dbe4ff;
+  --yellow:#e7f94c;
+  --pink:#ff6fae;
+  --mint:#5ee6b8;
+  --lilac:#c3b0ff;
+  --orange:#ffb03a;
+  --sky:#8fd8ff;
+  --line:rgba(255,255,255,.28);
+  --danger:#ff4f6d;
+  --display:"Jua","Black Han Sans","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{
+  background-color:var(--bg);
+  background-image:
+    radial-gradient(circle at 12% 18%,rgba(231,249,76,.9) 0 3px,transparent 4px),
+    radial-gradient(circle at 78% 9%,rgba(255,111,174,.85) 0 4px,transparent 5px),
+    radial-gradient(circle at 44% 62%,rgba(94,230,184,.7) 0 3px,transparent 4px),
+    radial-gradient(circle at 90% 74%,rgba(195,176,255,.8) 0 4px,transparent 5px),
+    radial-gradient(circle at 26% 88%,rgba(255,176,58,.8) 0 3px,transparent 4px),
+    radial-gradient(circle at 63% 30%,rgba(143,216,255,.8) 0 2px,transparent 3px),
+    radial-gradient(120% 70% at 50% 0%,#3d6cff 0%,var(--bg) 45%,var(--bg-deep) 100%);
+  background-size:220px 220px,260px 260px,190px 190px,240px 240px,210px 210px,170px 170px,100% 100%;
+  background-attachment:fixed;
+  color:var(--on-bg);font-family:var(--body);font-size:15px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:0 48px;
+  overflow-x:hidden;
+}
+.wrap{max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+
+/* bunting */
+.bunting{position:relative;height:64px;margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));overflow:hidden}
+.bunting::before{content:"";position:absolute;left:-2%;right:-2%;top:6px;height:30px;border-bottom:2px solid rgba(255,255,255,.55);border-radius:0 0 50% 50%}
+.flags{position:absolute;left:0;right:0;top:12px;display:flex;justify-content:space-around;padding-inline:8px}
+.flags i{display:block;width:30px;height:38px;clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:50% 0;animation:sway 3.2s ease-in-out infinite}
+.flags i:nth-child(5n+1){background:var(--yellow)}
+.flags i:nth-child(5n+2){background:var(--pink);animation-delay:-.6s}
+.flags i:nth-child(5n+3){background:var(--paper);animation-delay:-1.2s}
+.flags i:nth-child(5n+4){background:var(--mint);animation-delay:-1.8s}
+.flags i:nth-child(5n+5){background:var(--lilac);animation-delay:-2.4s}
+.flags i:nth-child(odd){margin-top:6px}
+.flags i:nth-child(n+9){display:none}
+@media (min-width:640px){.flags i:nth-child(n+9){display:block}.flags i:nth-child(n+15){display:none}}
+@media (min-width:1000px){.flags i:nth-child(n+15){display:block}}
+@keyframes sway{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+
+header{container-type:inline-size;width:100%;text-align:center;display:flex;flex-direction:column;gap:12px;align-items:center;padding-top:4px}
+.eyebrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center}
+.tag{font-size:12px;letter-spacing:.14em;font-weight:700;background:var(--yellow);color:var(--ink);border-radius:999px;padding:4px 12px;transform:rotate(-2deg)}
+.tag.test{background:transparent;color:var(--on-bg);border:1.5px dashed rgba(255,255,255,.7);transform:rotate(2deg)}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(20px,5.4vw,56px);font-size:min(56px,5.6cqi);white-space:nowrap;line-height:1.12;margin:0;
+  color:var(--paper);text-shadow:0 3px 0 var(--pink),0 6px 0 rgba(21,26,61,.35);letter-spacing:-.01em}
+h1 .hl{color:var(--yellow)}
+
+.legend{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 10px}
+.chip{display:flex;align-items:center;gap:8px;padding:6px 14px 6px 8px;background:var(--paper);color:var(--ink-soft);border-radius:999px;font-size:13px;box-shadow:0 3px 0 rgba(21,26,61,.25)}
+.chip b{color:var(--ink);font-weight:700;border-radius:999px;padding:1px 10px}
+.chip .left{font-variant-numeric:tabular-nums;font-weight:700;color:var(--ink)}
+.chip.out{opacity:.5;text-decoration:line-through}
+
+.stage{background:rgba(21,26,61,.22);border:2px solid rgba(255,255,255,.18);border-radius:26px;padding:clamp(10px,2vw,20px)}
+.board{display:grid;grid-template-columns:repeat(auto-fill,minmax(54px,1fr));gap:7px}
+.tile{
+  position:relative;aspect-ratio:1/1;max-width:100%;border-radius:12px;border:0;cursor:pointer;
+  background:var(--paper);color:var(--ink);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  font-family:var(--display);font-size:21px;line-height:1;padding:0;
+  box-shadow:0 4px 0 rgba(21,26,61,.32);transition:transform .14s ease,box-shadow .14s ease;
+  font-variant-numeric:tabular-nums;
+}
+.tile{color:#1d2250;box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 4px 0 rgba(10,14,45,.28);background-image:linear-gradient(180deg,rgba(255,255,255,.38),rgba(255,255,255,0) 60%)!important}
+.tile:nth-child(n){background-color:#b3dcff}
+.tile.used{background-image:none!important}
+.tile:hover:not(:disabled){box-shadow:inset 0 0 0 2px var(--yellow),0 7px 0 rgba(10,14,45,.45)!important}
+.tile:hover:not(:disabled){transform:translateY(-3px) rotate(-3deg);box-shadow:0 7px 0 rgba(21,26,61,.32)}
+.tile:nth-child(even):hover:not(:disabled){transform:translateY(-3px) rotate(3deg)}
+.tile:focus-visible{outline:3px solid var(--paper);outline-offset:2px}
+.tile.used{cursor:default;background:rgba(255,255,255,.08)!important;color:rgba(219,228,255,.6);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.18)}
+.tile.used .num{font-size:13px;opacity:.8}
+.tile .won{font-family:var(--body);font-weight:700;font-size:11px}
+.tile.used.win{background:var(--paper)!important;color:var(--ink);box-shadow:0 0 0 3px var(--yellow)}
+.tile.used.win .won{color:#d2266f}
+
+.controls{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center}
+.pick{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.pick label{font-size:14px;color:var(--on-bg);font-weight:700}
+input,button{font:inherit}
+.num-in{width:120px;padding:10px 12px;border-radius:14px;border:0;background:var(--paper);color:var(--ink);font-family:var(--display);font-size:24px;text-align:center;box-shadow:inset 0 -3px 0 rgba(21,26,61,.15)}
+.num-in::placeholder{color:#a7acc8}
+.num-in:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+.btn{border:0;border-radius:14px;padding:11px 20px;font-weight:700;cursor:pointer;background:var(--yellow);color:var(--ink);box-shadow:0 4px 0 rgba(21,26,61,.35);transition:transform .1s ease,box-shadow .1s ease}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(21,26,61,.35)}
+.btn.pinkb{background:var(--pink);color:var(--ink)}
+.btn.ghost{background:transparent;color:var(--on-bg);border:1.5px solid var(--line);box-shadow:none}
+.btn.ghost:hover{border-color:var(--on-bg)}
+.btn.warn{background:var(--danger);color:#fff;border:0}
+.btn:focus-visible{outline:3px solid var(--paper);outline-offset:2px}
+.right{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.msg{min-height:1.5em;font-size:14px;color:var(--yellow);width:100%;font-weight:700}
+.stat{font-size:13px;color:var(--on-bg-soft);font-variant-numeric:tabular-nums}
+
+.overlay{position:fixed;inset:0;z-index:20;overflow:auto;background:rgba(14,22,72,.82);display:flex;align-items:center;justify-content:center;
+  padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.ov-inner{display:flex;flex-direction:column;align-items:center;width:min(400px,100%)}
+.ticket{--h:clamp(190px,30vh,260px);position:relative;width:100%;height:var(--h);margin-top:calc(var(--h) + 6px);margin-bottom:12px;perspective:1100px}
+.flap.bot{display:none}
+.flap.top{height:100%!important}
+.flap.top .nw{height:100%!important}
+.flap.top .f{border-radius:20px!important;background:var(--yellow)}
+.flap.top .f::after{content:"";position:absolute;left:0;right:0;bottom:0;height:42%;background:repeating-linear-gradient(115deg,transparent 0 18px,rgba(255,255,255,.45) 18px 30px)}
+.flap.top .b{border-radius:20px!important}
+.sheet::before{display:none}
+.ticket.pop{animation:pop .32s cubic-bezier(.2,1.4,.4,1) both}
+.ticket.shake{animation:shake .5s ease-in-out both}
+@keyframes pop{from{transform:scale(.6) rotate(-6deg);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes shake{0%,100%{transform:rotate(0)}20%{transform:rotate(-4deg) scale(1.02)}40%{transform:rotate(4deg) scale(1.04)}60%{transform:rotate(-3deg) scale(1.04)}80%{transform:rotate(2deg) scale(1.01)}}
+.sheet{position:absolute;inset:0;border-radius:20px;background:var(--paper);color:var(--ink);box-shadow:inset 0 0 0 6px var(--pink),0 18px 40px rgba(0,0,0,.4);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;padding:20px;
+  opacity:0;transform:scale(.94);transition:opacity .35s ease .25s,transform .5s cubic-bezier(.2,1.3,.4,1) .25s}
+.sheet.lose{box-shadow:inset 0 0 0 6px var(--sky),0 18px 40px rgba(0,0,0,.4)}
+.ticket.open .sheet{opacity:1;transform:scale(1)}
+.sheet::before{content:"";position:absolute;left:14px;right:14px;top:50%;border-top:1px dashed rgba(75,84,128,.35)}
+.sheet .bnum{font-size:13px;letter-spacing:.14em;font-weight:700;color:var(--ink-soft)}
+.sheet .tier{font-family:var(--display);font-size:clamp(48px,11vw,72px);line-height:1;position:relative}
+.sheet .prize{font-size:clamp(17px,4.2vw,22px);font-weight:700;text-wrap:balance;position:relative}
+.sheet .congrats{font-size:14px;color:var(--ink-soft);position:relative}
+.flap{position:absolute;left:0;right:0;height:50%;transform-style:preserve-3d;transition:transform .85s cubic-bezier(.3,.85,.25,1);z-index:2}
+.flap.top{top:0;transform-origin:50% 0}
+.flap.bot{bottom:0;transform-origin:50% 100%}
+.flap .f,.flap .b{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden}
+.flap .f{background:var(--yellow);color:var(--ink)}
+.flap.top .f{border-radius:20px 20px 0 0;box-shadow:inset 0 -10px 18px rgba(21,26,61,.12)}
+.flap.bot .f{border-radius:0 0 20px 20px;background:repeating-linear-gradient(115deg,var(--yellow) 0 18px,#f3ff8a 18px 30px);box-shadow:inset 0 10px 18px rgba(21,26,61,.12)}
+.flap .b{transform:rotateX(180deg);background:linear-gradient(#ffe0ef,#ffc6df)}
+.flap.top .b{border-radius:0 0 20px 20px}
+.flap.bot .b{border-radius:20px 20px 0 0}
+.flap .nw{position:absolute;left:0;right:0;height:200%;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:clamp(84px,22vw,128px);line-height:1}
+.flap.top .nw{top:0}
+.flap.bot .nw{top:-100%}
+.ticket.open .flap.top{transform:rotateX(180deg)}
+.flap.top{transition:transform 1s cubic-bezier(.45,.05,.2,1)!important;z-index:3}
+.ticket.open .flap.bot{transform:rotateX(178deg)}
+.overlay .close{margin-top:10px;opacity:0;transition:opacity .3s ease}
+.overlay .close.show{opacity:1}
+canvas#fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:30}
+
+.panel{border-radius:20px;background:var(--paper);color:var(--ink);padding:20px;display:flex;flex-direction:column;gap:14px;box-shadow:0 6px 0 rgba(21,26,61,.3)}
+.panel h2{font-family:var(--display);font-weight:400;font-size:26px;margin:0}
+.panel p{margin:0;color:var(--ink-soft);font-size:13px}
+.panel .btn.ghost{color:var(--ink);border-color:rgba(21,26,61,.25)}
+.panel .btn.ghost:hover{border-color:var(--ink)}
+.rows{display:flex;flex-direction:column;gap:8px}
+.row{display:grid;grid-template-columns:110px minmax(0,1fr) 80px 40px;gap:8px;align-items:center}
+.row input{width:100%;padding:9px 10px;border-radius:10px;border:1.5px solid rgba(21,26,61,.18);background:#fff;color:var(--ink);min-width:0;color-scheme:light}
+.row input:disabled{background:#f1efe6;color:var(--ink-soft)}
+.row input:focus-visible{outline:2px solid var(--bg);outline-offset:1px}
+.row .del{background:transparent;border:1.5px solid rgba(21,26,61,.18);color:var(--ink-soft);border-radius:10px;height:38px;cursor:pointer}
+.row.fixed .del{visibility:hidden}
+.row-head{font-size:12px;color:var(--ink-soft)}
+.total{font-size:14px;font-variant-numeric:tabular-nums;font-weight:700}
+.total.bad{color:#c4163a}
+.total.ok{color:#0e7a52}
+.p-actions{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;align-items:center}
+.peek{display:flex;flex-direction:column;gap:8px;font-size:13px}
+.peek .pr{display:grid;grid-template-columns:72px minmax(0,1fr);gap:8px;border:1.5px solid rgba(21,26,61,.14);border-radius:10px;padding:8px 10px}
+.peek .pr b{color:#d2266f}
+.peek .nums{overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+.peek s{color:var(--ink-soft)}
+@media (max-width:520px){
+  .row{grid-template-columns:76px minmax(0,1fr) 64px 36px}
+  .board{grid-template-columns:repeat(auto-fill,minmax(46px,1fr));gap:5px}
+  .tile{font-size:17px}
+  .controls{justify-content:center}
+  .bunting{height:54px}
+  .flags i{width:24px;height:30px}
+}
+@media (prefers-reduced-motion:reduce){ .card,.tile,.btn{transition:none} .flags i{animation:none} }
+
+h1 .m-br{display:none}
+@media (min-width:768px){ h1{white-space:nowrap!important;font-size:min(56px,5.6cqi)!important} }
+@media (max-width:767px){ h1{white-space:normal;font-size:clamp(28px,8.6vw,40px)} h1 .m-br{display:inline} }
+</style>
+
+<div class="wrap">
+  <div class="bunting" aria-hidden="true"><div class="flags"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+  <header>
+    <div class="eyebrow"><span class="tag">BLUETIGER 꽝 없는 뽑기</span></div>
+    <h1>1부터 <span class="hl">300</span>,<br class="m-br"> 번호를 하나 골라주세요!</h1>
+  </header>
+
+  <div class="legend" id="legend" aria-label="남은 경품"></div>
+  <div class="stage"><div class="board" id="board" aria-label="번호판"></div></div>
+
+  <div class="controls">
+    <form class="pick" id="pickForm" autocomplete="off">
+      <label for="numIn">고른 번호</label>
+      <input class="num-in" id="numIn" type="number" inputmode="numeric" min="1" max="300" placeholder="128">
+      <button class="btn" type="submit">공개하기</button>
+    </form>
+    <div class="right">
+      <span class="stat" id="stat"></span>
+      <button class="btn ghost" type="button" id="resetBtn">리셋</button>
+      <button class="btn ghost" type="button" id="setBtn" aria-expanded="false">경품 설정</button>
+    </div>
+    <div class="msg" id="msg" role="status"></div>
+  </div>
+
+  <section class="panel" id="panel" hidden aria-label="경품 설정">
+    <h2>경품 설정</h2>
+    <p>진행자만 보는 화면이에요. 화면 공유 중이라면 공유를 잠시 멈추고 여세요. 당첨 수량을 뺀 나머지 번호는 자동으로 참가상(블루타이거 시크릿 자료집)이 돼요. 적용하면 번호판을 새로 섞어요.</p>
+    <div class="row row-head"><span>등급</span><span>상품명</span><span>수량</span><span></span></div>
+    <div class="rows" id="rows"></div>
+    <div class="p-actions">
+      <button class="btn ghost" type="button" id="addRow">등급 추가</button>
+      <span class="total" id="total"></span>
+    </div>
+    <div class="p-actions">
+      <button class="btn ghost" type="button" id="peekBtn">당첨 번호 보기</button>
+      <button class="btn" type="button" id="applyBtn">적용하고 섞기</button>
+    </div>
+    <div class="peek" id="peek" hidden></div>
+  </section>
+</div>
+
+<div class="overlay" id="overlay" hidden>
+  <div class="ov-inner">
+    <div class="ticket" id="ticket">
+      <div class="sheet" id="back">
+        <div class="bnum" id="bNum">NO. 7</div>
+        <div class="tier" id="bTier">1등</div>
+        <div class="prize" id="bPrize"></div>
+        <div class="congrats" id="bMsg">축하합니다!</div>
+      </div>
+      <div class="flap top"><div class="f"><div class="nw" id="fNumT">7</div></div><div class="b"></div></div>
+      <div class="flap bot"><div class="f"><div class="nw" id="fNumB">7</div></div><div class="b"></div></div>
+    </div>
+    <button class="btn close" type="button" id="closeBtn">확인</button>
+  </div>
+</div>
+<canvas id="fx" hidden></canvas>
+
+<script>
+(function(){
+  const N = 300;
+  const COLORS = ['#e7f94c','#ff6fae','#8fd8ff','#5ee6b8','#c3b0ff','#ffb03a'];
+  const FILLER = {tier:'참가상', name:'블루타이거 시크릿 자료집', filler:true};
+  // 번호판은 Google Apps Script(Code.gs)에 저장돼 모든 접속자가 같은 상태를 봐요. 진행자는 주소 뒤에 ?k=진행자키
+  const API = '__API_URL__';
+  const KEY = new URLSearchParams(location.search).get('k') || '';
+  const CACHE = 'bt-lucky-draw-300-shared';
+  const POLL_MS = 3000;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function rand(n){ const a = new Uint32Array(1); crypto.getRandomValues(a); return a[0] % n; }
+  function api(a, extra){
+    const q = new URLSearchParams(Object.assign({a}, extra||{}));
+    if(KEY) q.set('k', KEY);
+    return fetch(API+'?'+q, {cache:'no-store'}).then(r=>r.json());
+  }
+  // state.res[n] = 공개된 번호의 경품 인덱스(-1 = 자료집), state.left = 등급별 잔여(마지막 칸 = 자료집)
+  let state = {sid:null, ver:0, prizes:[], opened:[], res:{}, left:[]};
+  let ready = false, hold = null;
+  function take(d, force){
+    if(!d || !d.prizes) return;
+    if(!force && d.sid===state.sid && d.ver<=state.ver) return;
+    state = {sid:d.sid, ver:d.ver, prizes:d.prizes, opened:d.opened.map(o=>o[0]), res:Object.fromEntries(d.opened), left:d.left};
+    ready = true;
+    try{ localStorage.setItem(CACHE, JSON.stringify(d)); }catch(e){}
+    paintAll();
+  }
+  const prizeOf = idx => idx<0 ? FILLER : state.prizes[idx];
+
+  const $ = id => document.getElementById(id);
+  const board=$('board'), legend=$('legend'), msg=$('msg');
+
+  function buildBoard(){
+    board.innerHTML='';
+    const frag=document.createDocumentFragment();
+    for(let n=1;n<=N;n++){
+      const b=document.createElement('button');
+      b.type='button'; b.className='tile'; b.id='tile-'+n; b.dataset.n=n;
+      frag.appendChild(b);
+    }
+    board.appendChild(frag);
+    paintAll();
+  }
+  function paintTile(n){
+    // 내가 지금 여는 중인 번호는 확인을 누를 때까지 뒤에서 미리 공개하지 않아요
+    const b=$('tile-'+n); const used=state.opened.includes(n) && n!==hold;
+    b.className='tile'; b.disabled=false;
+    if(used){
+      const idx=state.res[n], p=prizeOf(idx);
+      b.classList.add('used'); if(idx>=0) b.classList.add('win'); b.disabled=true;
+      b.innerHTML='<span class="num"></span><span class="won"></span>';
+      b.querySelector('.num').textContent=n; b.querySelector('.won').textContent=p.tier;
+      b.setAttribute('aria-label', n+'번, 공개됨: '+p.tier+(idx>=0?' '+p.name:''));
+    } else {
+      b.textContent=n; b.setAttribute('aria-label', n+'번 공개하기');
+    }
+  }
+  function paintAll(){ for(let n=1;n<=N;n++) paintTile(n); paintLegend(); }
+  function paintLegend(){
+    legend.innerHTML='';
+    if(!ready){ $('stat').textContent=''; return; }
+    const left = i => state.left[i<0 ? state.prizes.length : i] || 0;
+    const items = state.prizes.map((p,i)=>({p, i, l:left(i), color:COLORS[i%COLORS.length]}));
+    items.push({p:FILLER, i:-1, l:left(-1), color:'#dbe4ff'});
+    items.forEach(({p,l,color})=>{
+      const c=document.createElement('div'); c.className='chip'+(l===0?' out':'');
+      c.innerHTML='<b></b><span></span><span class="left"></span>';
+      c.querySelector('b').style.background=color;
+      c.querySelector('b').textContent=p.tier;
+      c.querySelectorAll('span')[0].textContent = p.name;
+      c.querySelector('.left').textContent='잔여 '+l+'개';
+      legend.appendChild(c);
+    });
+    $('stat').textContent='공개 '+state.opened.length+' / '+N;
+  }
+
+  board.addEventListener('click',e=>{
+    const t=e.target.closest('.tile'); if(!t || t.disabled) return;
+    reveal(parseInt(t.dataset.n,10));
+  });
+
+  let busy=false;
+  function reveal(n){
+    if(!(n>=1 && n<=N)){ msg.textContent='1부터 300 사이 번호를 입력해 주세요.'; return; }
+    if(!ready){ msg.textContent='번호판을 불러오는 중이에요. 잠시 후 다시 골라 주세요.'; return; }
+    if(state.opened.includes(n)){ msg.textContent=n+'번은 이미 공개했어요. 다른 번호를 골라 주세요.'; return; }
+    if(busy) return;
+    busy=true; msg.textContent='';
+    $('fNumT').textContent=n; $('fNumB').textContent=n; $('bNum').textContent='NO. '+n;
+    const tk=$('ticket'), cb=$('closeBtn'), ov=$('overlay');
+    timers.forEach(clearTimeout); timers=[];
+    tk.className='ticket'; cb.classList.remove('show');
+    ov.hidden=false; hold=n;
+    window.__last=n;
+    const req = api('draw',{n});
+    // 서버 응답이 늦으면 응답이 올 때까지 티켓을 계속 흔들어요
+    let shaker=null;
+    if(!reduce){
+      void tk.offsetWidth;
+      tk.classList.add('pop');
+      later(()=>{ tk.classList.remove('pop'); tk.classList.add('shake'); }, 340);
+      later(()=>{ shaker=setInterval(()=>{ tk.classList.remove('shake'); void tk.offsetWidth; tk.classList.add('shake'); }, 520); }, 860);
+    }
+    const minWait = new Promise(r=>setTimeout(r, reduce?0:860));
+    Promise.all([req, minWait]).then(([d])=>{
+      busy=false; clearInterval(shaker);
+      if(hold!==n){ take(d); return; }          // 기다리는 동안 창을 닫은 경우
+      if(!d.ok){
+        hold=null; timers.forEach(clearTimeout); timers=[]; ov.hidden=true;
+        take(d, true);
+        msg.textContent = d.err==='taken' ? n+'번은 방금 다른 분이 공개했어요. 다른 번호를 골라 주세요.' : '뽑기에 실패했어요. 다시 시도해 주세요.';
+        return;
+      }
+      take(d);
+      const idx=d.idx, p=prizeOf(idx), win=idx>=0;
+      $('bTier').textContent=p.tier;
+      $('bTier').style.color = idx===0 ? '#d2266f' : 'var(--ink)';
+      $('bPrize').textContent = p.name;
+      $('bMsg').textContent = win ? '축하합니다!' : '참여해 주셔서 감사해요';
+      $('back').classList.toggle('lose', !win);
+      if(reduce){ tk.classList.add('open'); cb.classList.add('show'); cb.focus(); return; }
+      tk.classList.remove('pop','shake'); tk.classList.add('open');
+      later(()=>{ fireworks(tk, idx); }, 190);
+      later(()=>{ cb.classList.add('show'); cb.focus(); }, 640);
+    }).catch(()=>{
+      busy=false; clearInterval(shaker);
+      if(hold===n){ hold=null; timers.forEach(clearTimeout); timers=[]; ov.hidden=true; }
+      paintAll();
+      msg.textContent='연결이 불안정해요. 잠시 후 다시 시도해 주세요.';
+    });
+  }
+
+  $('pickForm').addEventListener('submit',e=>{
+    e.preventDefault();
+    reveal(parseInt($('numIn').value,10)); $('numIn').value='';
+  });
+  let timers=[];
+  function later(fn,ms){ timers.push(setTimeout(fn,ms)); }
+  $('closeBtn').addEventListener('click',()=>{
+    timers.forEach(clearTimeout); timers=[];
+    $('overlay').hidden=true; hold=null;
+    if(window.__last){ paintTile(window.__last); paintLegend(); }
+    $('numIn').focus();
+  });
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape' && !$('overlay').hidden) $('closeBtn').click(); });
+
+  const HOST_ONLY = '진행자 링크로 접속해야 할 수 있어요.';
+  function hostFail(d){ msg.textContent = d && d.err==='auth' ? '진행자 키가 맞지 않아요. '+HOST_ONLY : '저장에 실패했어요. 다시 시도해 주세요.'; }
+
+  let armed=null;
+  $('resetBtn').addEventListener('click',()=>{
+    const b=$('resetBtn');
+    if(!KEY){ msg.textContent='리셋은 '+HOST_ONLY; return; }
+    if(!armed){
+      b.textContent='한 번 더 누르면 리셋돼요'; b.classList.add('warn'); b.classList.remove('ghost');
+      armed=setTimeout(()=>{ armed=null; b.textContent='리셋'; b.classList.remove('warn'); b.classList.add('ghost'); },3000);
+      return;
+    }
+    clearTimeout(armed); armed=null;
+    b.textContent='리셋'; b.classList.remove('warn'); b.classList.add('ghost');
+    api('reset').then(d=>{
+      if(!d.ok) return hostFail(d);
+      take(d); hidePeek();
+      msg.textContent='리셋했어요. 모든 번호가 닫히고 경품 위치를 새로 섞었어요.';
+    }).catch(()=>hostFail());
+  });
+
+  let draft=[];
+  $('setBtn').addEventListener('click',()=>{
+    if(!KEY){ msg.textContent='경품 설정은 '+HOST_ONLY; return; }
+    const p=$('panel'); p.hidden=!p.hidden;
+    $('setBtn').setAttribute('aria-expanded', String(!p.hidden));
+    if(!p.hidden){ draft = state.prizes.map(x=>({...x})); drawRows(); hidePeek(); }
+  });
+  function drawRows(){
+    const rows=$('rows'); rows.innerHTML='';
+    draft.forEach((p,i)=>{
+      const r=document.createElement('div'); r.className='row';
+      r.innerHTML='<input aria-label="등급"><input aria-label="상품명"><input type="number" min="0" max="300" aria-label="수량"><button class="del" type="button" aria-label="삭제">✕</button>';
+      const [t,nm,q]=r.querySelectorAll('input');
+      t.id='tier-'+i; nm.id='name-'+i; q.id='qty-'+i;
+      t.value=p.tier; nm.value=p.name; q.value=p.qty;
+      t.oninput=()=>{p.tier=t.value}; nm.oninput=()=>{p.name=nm.value};
+      q.oninput=()=>{p.qty=Math.max(0,parseInt(q.value,10)||0); sum();};
+      r.querySelector('.del').onclick=()=>{ draft.splice(i,1); drawRows(); };
+      rows.appendChild(r);
+    });
+    const f=document.createElement('div'); f.className='row fixed';
+    f.innerHTML='<input aria-label="등급" disabled><input aria-label="상품명" disabled><input aria-label="수량" id="fillerQty" disabled><button class="del" type="button" tabindex="-1" aria-hidden="true"></button>';
+    const [ft,fn]=f.querySelectorAll('input'); ft.value='참가상'; fn.value='블루타이거 시크릿 자료집 (나머지 번호 전체)';
+    rows.appendChild(f);
+    sum();
+  }
+  function sum(){
+    const t=draft.reduce((a,p)=>a+p.qty,0), el=$('total'), fq=$('fillerQty');
+    if(fq) fq.value = Math.max(0,N-t);
+    el.textContent = '당첨 '+t+'개 + 참가상 '+Math.max(0,N-t)+'개 = '+N;
+    el.className='total '+(t<=N?'ok':'bad');
+    if(t>N) el.textContent='당첨 수량이 '+t+'개예요. 300개 이하로 맞춰 주세요.';
+    return t;
+  }
+  $('addRow').addEventListener('click',()=>{ draft.push({tier:'추가',name:'',qty:0}); drawRows(); });
+  $('applyBtn').addEventListener('click',()=>{
+    const clean = draft.filter(p=>p.qty>0).map(p=>({tier:p.tier.trim()||'경품', name:p.name.trim()||'경품', qty:p.qty}));
+    if(clean.reduce((a,p)=>a+p.qty,0)>N){ sum(); return; }
+    api('apply',{p:JSON.stringify(clean)}).then(d=>{
+      if(!d.ok) return hostFail(d);
+      take(d); hidePeek();
+      $('panel').hidden=true; $('setBtn').setAttribute('aria-expanded','false');
+      msg.textContent='경품을 적용하고 번호판을 새로 섞었어요.';
+    }).catch(()=>hostFail());
+  });
+  function hidePeek(){ $('peek').hidden=true; $('peekBtn').textContent='당첨 번호 보기'; }
+  $('peekBtn').addEventListener('click',()=>{
+    const pk=$('peek');
+    if(!pk.hidden){ hidePeek(); return; }
+    api('peek').then(d=>{
+      if(!d.ok) return hostFail(d);
+      take(d);
+      pk.innerHTML='';
+      state.prizes.forEach((p,i)=>{
+        const nums=[]; d.slots.forEach((s,k)=>{ if(s===i) nums.push(k+1); });
+        const row=document.createElement('div'); row.className='pr';
+        row.innerHTML='<b></b><span class="nums"></span>'; row.querySelector('b').textContent=p.tier;
+        const sp=row.querySelector('.nums');
+        nums.forEach((n,j)=>{
+          const el=document.createElement(state.opened.includes(n)?'s':'span'); el.textContent=n;
+          sp.appendChild(el); if(j<nums.length-1) sp.appendChild(document.createTextNode(', '));
+        });
+        pk.appendChild(row);
+      });
+      const note=document.createElement('p'); note.textContent='취소선은 이미 공개된 번호예요. 나머지 번호는 모두 참가상(블루타이거 시크릿 자료집)이에요.';
+      pk.appendChild(note);
+      pk.hidden=false; $('peekBtn').textContent='당첨 번호 숨기기';
+    }).catch(()=>hostFail());
+  });
+
+  // fireworks: radial bursts with trails around the ticket, plus confetti for winners
+  let parts=[], running=false;
+  const PALETTES=[['#ffb627','#ffd27a','#fff1c9'],['#6fd3ff','#c9d6ff','#f3f6ff'],['#ff8fb1','#ffc2d4','#f3f6ff'],['#7ee0a1','#c4f3d4','#f3f6ff'],['#b59cff','#ddd0ff','#f3f6ff']];
+  function burst(x,y,count,pal,power){
+    for(let i=0;i<count;i++){
+      const ang=Math.PI*2*i/count+Math.random()*.2, sp=(Math.random()*.6+.6)*power;
+      parts.push({k:'spark',x,y,px:x,py:y,vx:Math.cos(ang)*sp,vy:Math.sin(ang)*sp,life:1,decay:Math.random()*.012+.012,c:pal[rand(pal.length)],w:Math.random()*1.6+1.6});
+    }
+    parts.push({k:'flash',x,y,life:1,decay:.08,r:power*7});
+  }
+  function confetti(count,cx,cy){
+    const cols=['#ffb627','#f3f6ff','#2f56c4','#ff8fb1','#7ee0a1'];
+    for(let i=0;i<count;i++) parts.push({k:'conf',x:cx+(Math.random()-.5)*160,y:cy,vx:(Math.random()-.5)*14,vy:-Math.random()*14-5,
+      r:Math.random()*6+4,c:cols[rand(cols.length)],a:Math.random()*6,va:(Math.random()-.5)*.4,life:1,decay:.006});
+  }
+  function fireworks(el, idx){
+    const r=el.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2;
+    const win=idx>=0, shots = idx===0 ? 9 : win ? 5 : 2;
+    for(let s=0;s<shots;s++){
+      const delay = s===0 ? 0 : 140*s + Math.random()*120;
+      setTimeout(()=>{
+        const x = s===0 ? cx : cx+(Math.random()-.5)*Math.min(innerWidth*.9, r.width*2.2);
+        const y = s===0 ? r.top-r.height*.35 : cy+(Math.random()-.75)*r.height*1.6;
+        burst(x, y, win?64:40, PALETTES[(s+(idx<0?1:0))%PALETTES.length], win?7.5:5.5);
+        run();
+      }, delay);
+    }
+    if(win) confetti(idx===0?220:120, cx, cy);
+    run();
+  }
+  function run(){
+    if(running) return; running=true;
+    const cv=$('fx'); cv.hidden=false; const ctx=cv.getContext('2d');
+    const dpr=window.devicePixelRatio||1; cv.width=innerWidth*dpr; cv.height=innerHeight*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
+    (function step(){
+      ctx.clearRect(0,0,innerWidth,innerHeight);
+      ctx.globalCompositeOperation='lighter';
+      parts.forEach(p=>{
+        if(p.k==='spark'){
+          p.px=p.x; p.py=p.y; p.vx*=.965; p.vy=p.vy*.965+.06; p.x+=p.vx; p.y+=p.vy; p.life-=p.decay;
+          ctx.globalAlpha=Math.max(0,p.life); ctx.strokeStyle=p.c; ctx.lineWidth=p.w; ctx.lineCap='round';
+          ctx.beginPath(); ctx.moveTo(p.px-p.vx*2,p.py-p.vy*2); ctx.lineTo(p.x,p.y); ctx.stroke();
+        } else if(p.k==='flash'){
+          p.life-=p.decay; const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r*(2-p.life));
+          g.addColorStop(0,'rgba(255,241,201,'+Math.max(0,p.life*.9)+')'); g.addColorStop(1,'rgba(255,241,201,0)');
+          ctx.globalAlpha=1; ctx.fillStyle=g; ctx.beginPath(); ctx.arc(p.x,p.y,p.r*(2-p.life),0,Math.PI*2); ctx.fill();
+        }
+      });
+      ctx.globalCompositeOperation='source-over';
+      parts.forEach(p=>{
+        if(p.k!=='conf') return;
+        p.vy+=.35; p.vx*=.99; p.x+=p.vx; p.y+=p.vy; p.a+=p.va; p.life-=p.decay;
+        ctx.globalAlpha=Math.min(1,p.life*2); ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.a); ctx.fillStyle=p.c; ctx.fillRect(-p.r/2,-p.r/4,p.r,p.r/2); ctx.restore();
+      });
+      ctx.globalAlpha=1;
+      parts=parts.filter(p=>p.life>0 && p.y<innerHeight+40);
+      if(parts.length) requestAnimationFrame(step);
+      else { ctx.clearRect(0,0,innerWidth,innerHeight); cv.hidden=true; running=false; }
+    })();
+  }
+
+  // 다른 사람이 뽑은 번호를 주기적으로 받아와요(창이 안 보일 땐 쉬어요)
+  let polling=false;
+  function poll(){
+    if(polling || document.hidden) return;
+    polling=true;
+    api('state').then(d=>take(d)).catch(()=>{}).finally(()=>{ polling=false; });
+  }
+
+  buildBoard();
+  try{ const c=JSON.parse(localStorage.getItem(CACHE)); if(c && c.prizes) take(c); }catch(e){}
+  poll();
+  setInterval(poll, POLL_MS);
+  document.addEventListener('visibilitychange', poll);
+})();
+</script>
+
+</body></html>
