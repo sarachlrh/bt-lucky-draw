@@ -1,6 +1,6 @@
 // 블루타이거 300 번호 뽑기 - Google Apps Script (스프레드시트에 연결해 웹 앱으로 배포)
 // 번호판 상태(경품 위치·공개된 번호)는 스크립트 속성에, 뽑기 기록은 '기록' 탭에 저장.
-// 진행자 키는 '설정' 탭 B1에 있음(첫 접속 때 자동 생성). 진행자 링크 = 페이지 주소 + ?k=진행자키
+// 링크를 가진 진행자 누구나 뽑기·리셋·경품 설정·당첨 번호 보기를 할 수 있음.
 var N = 300;
 var DEFAULT_PRIZES = [
   {tier:'1등', name:'블루타이거 수업 100% 무료 수강권', qty:1},
@@ -35,11 +35,6 @@ function sheet_(name,head){
   if(!sh){sh=ss.insertSheet(name);sh.appendRow(head)}
   return sh;
 }
-function adminKey_(){
-  var sh=sheet_('설정',['진행자키','']),k=String(sh.getRange('B1').getValue()||'');
-  if(!k){k=Utilities.getUuid().slice(0,8);sh.getRange('B1').setValue(k)}
-  return k;
-}
 function log_(s,n){
   var idx=s.slots[n-1],p=idx<0?FILLER:s.prizes[idx];
   sheet_('기록',['회차','시각','번호','등급','상품']).appendRow([s.round,new Date(),n,p.tier,p.name]);
@@ -66,7 +61,6 @@ function doGet(e){
       s.opened.push(n);s.ver++;save_(s);logIt=true;
       out=public_(s);out.ok=true;out.n=n;out.idx=s.slots[n-1];
     } else if(a==='reset'||a==='apply'||a==='peek'){
-      if(String(q.k||'')!==adminKey_())return json_({ok:false,err:'auth'});
       if(a==='reset'){s=fresh_(s.prizes,s);save_(s)}
       if(a==='apply'){try{s=fresh_(clean_(q.p),s)}catch(err){return json_({ok:false,err:'prizes'})}save_(s)}
       out=public_(s);out.ok=true;

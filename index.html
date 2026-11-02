@@ -263,9 +263,8 @@ h1 .m-br{display:none}
   const N = 300;
   const COLORS = ['#e7f94c','#ff6fae','#8fd8ff','#5ee6b8','#c3b0ff','#ffb03a'];
   const FILLER = {tier:'참가상', name:'블루타이거 시크릿 자료집', filler:true};
-  // 번호판은 Google Apps Script(Code.gs)에 저장돼 모든 접속자가 같은 상태를 봐요. 진행자는 주소 뒤에 ?k=진행자키
+  // 번호판은 Google Apps Script(Code.gs)에 저장돼 모든 접속자가 같은 상태를 봐요
   const API = 'https://script.google.com/macros/s/AKfycbzrKRGA06J2LfSAa_4US3Qq20xj_48riMT_Y_1JeLsBDr6vIAMjZY5nPRjMRkTiSHY8/exec';
-  const KEY = new URLSearchParams(location.search).get('k') || '';
   const CACHE = 'bt-lucky-draw-300-shared';
   const POLL_MS = 3000;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -273,7 +272,6 @@ h1 .m-br{display:none}
   function rand(n){ const a = new Uint32Array(1); crypto.getRandomValues(a); return a[0] % n; }
   function api(a, extra){
     const q = new URLSearchParams(Object.assign({a}, extra||{}));
-    if(KEY) q.set('k', KEY);
     return fetch(API+'?'+q, {cache:'no-store'}).then(r=>r.json());
   }
   // state.res[n] = 공개된 번호의 경품 인덱스(-1 = 자료집), state.left = 등급별 잔여(마지막 칸 = 자료집)
@@ -406,13 +404,11 @@ h1 .m-br{display:none}
   });
   document.addEventListener('keydown',e=>{ if(e.key==='Escape' && !$('overlay').hidden) $('closeBtn').click(); });
 
-  const HOST_ONLY = '진행자 링크로 접속해야 할 수 있어요.';
-  function hostFail(d){ msg.textContent = d && d.err==='auth' ? '진행자 키가 맞지 않아요. '+HOST_ONLY : '저장에 실패했어요. 다시 시도해 주세요.'; }
+  function saveFail(){ msg.textContent='저장에 실패했어요. 다시 시도해 주세요.'; }
 
   let armed=null;
   $('resetBtn').addEventListener('click',()=>{
     const b=$('resetBtn');
-    if(!KEY){ msg.textContent='리셋은 '+HOST_ONLY; return; }
     if(!armed){
       b.textContent='한 번 더 누르면 리셋돼요'; b.classList.add('warn'); b.classList.remove('ghost');
       armed=setTimeout(()=>{ armed=null; b.textContent='리셋'; b.classList.remove('warn'); b.classList.add('ghost'); },3000);
@@ -421,15 +417,14 @@ h1 .m-br{display:none}
     clearTimeout(armed); armed=null;
     b.textContent='리셋'; b.classList.remove('warn'); b.classList.add('ghost');
     api('reset').then(d=>{
-      if(!d.ok) return hostFail(d);
+      if(!d.ok) return saveFail(d);
       take(d); hidePeek();
       msg.textContent='리셋했어요. 모든 번호가 닫히고 경품 위치를 새로 섞었어요.';
-    }).catch(()=>hostFail());
+    }).catch(()=>saveFail());
   });
 
   let draft=[];
   $('setBtn').addEventListener('click',()=>{
-    if(!KEY){ msg.textContent='경품 설정은 '+HOST_ONLY; return; }
     const p=$('panel'); p.hidden=!p.hidden;
     $('setBtn').setAttribute('aria-expanded', String(!p.hidden));
     if(!p.hidden){ draft = state.prizes.map(x=>({...x})); drawRows(); hidePeek(); }
@@ -466,18 +461,18 @@ h1 .m-br{display:none}
     const clean = draft.filter(p=>p.qty>0).map(p=>({tier:p.tier.trim()||'경품', name:p.name.trim()||'경품', qty:p.qty}));
     if(clean.reduce((a,p)=>a+p.qty,0)>N){ sum(); return; }
     api('apply',{p:JSON.stringify(clean)}).then(d=>{
-      if(!d.ok) return hostFail(d);
+      if(!d.ok) return saveFail(d);
       take(d); hidePeek();
       $('panel').hidden=true; $('setBtn').setAttribute('aria-expanded','false');
       msg.textContent='경품을 적용하고 번호판을 새로 섞었어요.';
-    }).catch(()=>hostFail());
+    }).catch(()=>saveFail());
   });
   function hidePeek(){ $('peek').hidden=true; $('peekBtn').textContent='당첨 번호 보기'; }
   $('peekBtn').addEventListener('click',()=>{
     const pk=$('peek');
     if(!pk.hidden){ hidePeek(); return; }
     api('peek').then(d=>{
-      if(!d.ok) return hostFail(d);
+      if(!d.ok) return saveFail(d);
       take(d);
       pk.innerHTML='';
       state.prizes.forEach((p,i)=>{
@@ -494,7 +489,7 @@ h1 .m-br{display:none}
       const note=document.createElement('p'); note.textContent='취소선은 이미 공개된 번호예요. 나머지 번호는 모두 참가상(블루타이거 시크릿 자료집)이에요.';
       pk.appendChild(note);
       pk.hidden=false; $('peekBtn').textContent='당첨 번호 숨기기';
-    }).catch(()=>hostFail());
+    }).catch(()=>saveFail());
   });
 
   // fireworks: radial bursts with trails around the ticket, plus confetti for winners
