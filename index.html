@@ -1,10 +1,10 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><title>블루타이거 300 번호 뽑기</title>
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><title>블루타이거 100 번호 뽑기</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Black+Han+Sans&family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap">
 </head><body>
 
 <style>
-/* Layout: a party stage for screen-sharing — bunting across the top, sticker-style headline, a confetti-coloured board of 300 tickets, host controls below. One deliberate festive look (single theme). */
+/* Layout: a party stage for screen-sharing — bunting across the top, sticker-style headline, a confetti-coloured board of 100 tickets, host controls below. One deliberate festive look (single theme). */
 :root{
   --bg:#2a5cf0;          /* BlueTiger party blue */
   --bg-deep:#1a3cc0;
@@ -218,7 +218,7 @@ h1 .m-br{display:none}
   <div class="bunting" aria-hidden="true"><div class="flags"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
   <header>
     <div class="eyebrow"><span class="tag">BLUETIGER 꽝 없는 뽑기</span></div>
-    <h1>1부터 <span class="hl">300</span>,<br class="m-br"> 번호를 하나 골라주세요!</h1>
+    <h1>1부터 <span class="hl">100</span>,<br class="m-br"> 번호를 하나 골라주세요!</h1>
   </header>
 
   <div class="legend" id="legend" aria-label="남은 경품"></div>
@@ -227,7 +227,7 @@ h1 .m-br{display:none}
   <div class="controls">
     <form class="pick" id="pickForm" autocomplete="off">
       <label for="numIn">고른 번호</label>
-      <input class="num-in" id="numIn" type="number" inputmode="numeric" min="1" max="300" placeholder="128">
+      <input class="num-in" id="numIn" type="number" inputmode="numeric" min="1" max="100" placeholder="28">
       <button class="btn" type="submit">공개하기</button>
     </form>
     <div class="right">
@@ -280,12 +280,12 @@ h1 .m-br{display:none}
 
 <script>
 (function(){
-  const N = 300;
+  const N = 100;
   const COLORS = ['#e7f94c','#ff6fae','#8fd8ff','#5ee6b8','#c3b0ff','#ffb03a'];
   const FILLER = {tier:'참가상', name:'블루타이거 시크릿 자료집', filler:true};
   // 번호판은 Google Apps Script(Code.gs)에 저장돼 모든 접속자가 같은 상태를 봐요
   const API = 'https://script.google.com/macros/s/AKfycbzrKRGA06J2LfSAa_4US3Qq20xj_48riMT_Y_1JeLsBDr6vIAMjZY5nPRjMRkTiSHY8/exec';
-  const CACHE = 'bt-lucky-draw-300-shared';
+  const CACHE = 'bt-lucky-draw-100-shared';
   const POLL_MS = 3000;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -361,7 +361,7 @@ h1 .m-br{display:none}
 
   let busy=false;
   function reveal(n){
-    if(!(n>=1 && n<=N)){ msg.textContent='1부터 300 사이 번호를 입력해 주세요.'; return; }
+    if(!(n>=1 && n<=N)){ msg.textContent='1부터 '+N+' 사이 번호를 입력해 주세요.'; return; }
     if(!ready){ msg.textContent='번호판을 불러오는 중이에요. 잠시 후 다시 골라 주세요.'; return; }
     if(state.opened.includes(n)){ msg.textContent=n+'번은 이미 공개했어요. 다른 번호를 골라 주세요.'; return; }
     if(busy) return;
@@ -466,7 +466,7 @@ h1 .m-br{display:none}
     const rows=$('rows'); rows.innerHTML='';
     draft.forEach((p,i)=>{
       const r=document.createElement('div'); r.className='row';
-      r.innerHTML='<input aria-label="등급"><input aria-label="상품명"><input type="number" min="0" max="300" aria-label="수량"><button class="del" type="button" aria-label="삭제">✕</button>';
+      r.innerHTML='<input aria-label="등급"><input aria-label="상품명"><input type="number" min="0" max="100" aria-label="수량"><button class="del" type="button" aria-label="삭제">✕</button>';
       const [t,nm,q]=r.querySelectorAll('input');
       t.id='tier-'+i; nm.id='name-'+i; q.id='qty-'+i;
       t.value=p.tier; nm.value=p.name; q.value=p.qty;
@@ -486,7 +486,7 @@ h1 .m-br{display:none}
     if(fq) fq.value = Math.max(0,N-t);
     el.textContent = '당첨 '+t+'개 + 참가상 '+Math.max(0,N-t)+'개 = '+N;
     el.className='total '+(t<=N?'ok':'bad');
-    if(t>N) el.textContent='당첨 수량이 '+t+'개예요. 300개 이하로 맞춰 주세요.';
+    if(t>N) el.textContent='당첨 수량이 '+t+'개예요. '+N+'개 이하로 맞춰 주세요.';
     return t;
   }
   $('addRow').addEventListener('click',()=>{ draft.push({tier:'추가',name:'',qty:0}); drawRows(); });

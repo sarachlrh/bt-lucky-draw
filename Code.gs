@@ -1,7 +1,7 @@
-// 블루타이거 300 번호 뽑기 - Google Apps Script (스프레드시트에 연결해 웹 앱으로 배포)
+// 블루타이거 100 번호 뽑기 - Google Apps Script (스프레드시트에 연결해 웹 앱으로 배포)
 // 번호판 상태(경품 위치·공개된 번호)는 스크립트 속성에, 뽑기 기록은 '기록' 탭에 저장.
 // 링크를 가진 진행자 누구나 뽑기·리셋·경품 설정·당첨 번호 보기를 할 수 있음.
-var N = 300;
+var N = 100;
 var DEFAULT_PRIZES = [
   {tier:'1등', name:'블루타이거 수업 100% 무료 수강권', qty:1},
   {tier:'2등', name:'네이버페이 1만원권', qty:3},
@@ -48,12 +48,14 @@ function clean_(raw){
 
 function doGet(e){
   var q=e.parameter,a=q.a||'state';
-  if(a==='state'){var s0=load_();if(s0)return json_(public_(s0))}
+  if(a==='state'){var s0=load_();if(s0&&s0.slots.length===N)return json_(public_(s0))}
   var lock=LockService.getScriptLock();lock.waitLock(20000);
   var s,n,logIt=false,out;
   try{
     s=load_();
     if(!s){s=fresh_(DEFAULT_PRIZES,null);save_(s)}
+    // 번호판 크기(N)를 바꿔 다시 배포하면 경품 설정은 그대로 두고 새로 섞어요
+    if(s.slots.length!==N){s=fresh_(s.prizes,s);save_(s)}
     if(a==='draw'){
       n=parseInt(q.n,10);
       if(!(n>=1&&n<=N))return json_({ok:false,err:'range'});
