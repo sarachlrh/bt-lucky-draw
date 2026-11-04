@@ -212,6 +212,29 @@ canvas#fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-in
 h1 .m-br{display:none}
 @media (min-width:768px){ h1{white-space:nowrap!important;font-size:min(56px,5.6cqi)!important} }
 @media (max-width:767px){ h1{white-space:normal;font-size:clamp(28px,8.6vw,40px)} h1 .m-br{display:inline} }
+
+/* 100칸 번호판. 모바일은 원래 흐름(경품 현황 → 번호판 → 조작부) 그대로 */
+.side{display:contents}
+.legend{order:1}.stage{order:2}.controls{order:3}.panel{order:4}
+@media (min-width:640px){ .board{grid-template-columns:repeat(10,minmax(0,1fr))} }
+/* PC: 왼쪽에 큰 10×10 번호판, 오른쪽에 경품 현황과 조작부를 붙여 두어 스크롤해도 늘 보이게 */
+@media (min-width:1100px){
+  .wrap{--bd:min(840px,calc(100vw - 440px),calc(100svh - 48px));max-width:none;display:grid;grid-template-columns:var(--bd) 340px;justify-content:center;column-gap:28px;row-gap:22px}
+  .bunting,header,.panel{grid-column:1/-1}
+  .stage{grid-column:1;grid-row:3}
+  .side{grid-column:2;grid-row:3;display:flex;flex-direction:column;gap:18px;position:sticky;top:20px;align-self:start}
+  .legend{flex-direction:column;align-items:stretch;gap:8px}
+  .chip{padding:9px 14px 9px 9px;font-size:13.5px}
+  .chip span:first-of-type{flex:1;min-width:0}
+  .controls{flex-direction:column;align-items:stretch;gap:14px;padding:16px;border-radius:20px;background:rgba(21,26,61,.22);border:2px solid rgba(255,255,255,.18)}
+  .pick .num-in{flex:1;min-width:0}
+  .right .stat{margin-right:auto}
+  .msg{min-height:0}
+  .board{gap:8px}
+  .tile{font-size:calc(var(--bd) / 29);border-radius:14px}
+  .tile.used .num{font-size:calc(var(--bd) / 52)}
+  .tile .won{font-size:calc(var(--bd) / 64)}
+}
 </style>
 
 <div class="wrap">
@@ -221,9 +244,10 @@ h1 .m-br{display:none}
     <h1>1부터 <span class="hl">100</span>,<br class="m-br"> 번호를 하나 골라주세요!</h1>
   </header>
 
-  <div class="legend" id="legend" aria-label="남은 경품"></div>
   <div class="stage"><div class="board" id="board" aria-label="번호판"></div></div>
 
+  <aside class="side">
+  <div class="legend" id="legend" aria-label="남은 경품"></div>
   <div class="controls">
     <form class="pick" id="pickForm" autocomplete="off">
       <label for="numIn">고른 번호</label>
@@ -237,6 +261,7 @@ h1 .m-br{display:none}
     </div>
     <div class="msg" id="msg" role="status"></div>
   </div>
+  </aside>
 
   <section class="panel" id="panel" hidden aria-label="경품 설정">
     <h2>경품 설정</h2>
@@ -460,7 +485,7 @@ h1 .m-br{display:none}
   $('setBtn').addEventListener('click',()=>{
     const p=$('panel'); p.hidden=!p.hidden;
     $('setBtn').setAttribute('aria-expanded', String(!p.hidden));
-    if(!p.hidden){ draft = state.prizes.map(x=>({...x})); drawRows(); hidePeek(); }
+    if(!p.hidden){ draft = state.prizes.map(x=>({...x})); drawRows(); hidePeek(); p.scrollIntoView({behavior:reduce?'auto':'smooth', block:'nearest'}); }
   });
   function drawRows(){
     const rows=$('rows'); rows.innerHTML='';
